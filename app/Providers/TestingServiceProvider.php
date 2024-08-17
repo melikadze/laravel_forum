@@ -65,7 +65,7 @@ class TestingServiceProvider extends ServiceProvider
 
         TestResponse::macro('assertComponent', function (string $component) {
 
-            /** @var AssertableInertia $this */
+            /** @var TestResponse $this */
             return $this->assertInertia(fn (AssertableInertia $inertia) => $inertia->component($component, true));
 
         });
