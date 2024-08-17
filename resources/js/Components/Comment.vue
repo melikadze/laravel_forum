@@ -7,15 +7,25 @@
                 <div class="text-gray-500">{{ relativeDate(comment.created_at) }} ago</div>
             </div>
         </div>
-        <p class="text-lg leading-relaxed mb-6">{{ comment.body }}</p>
-        <div class="flex justify-between items-center hidden">
+        <p class="text-lg leading-relaxed mb-6 break-words">{{ comment.body }}</p>
+        <div class="flex justify-between items-center ">
             <div>
                 <a href="#" class="text-gray-500 hover:text-gray-700 mr-4"><i class="far fa-thumbs-up"></i> Like</a>
                 <a href="#" class="text-gray-500 hover:text-gray-700"><i class="far fa-comment-alt"></i> Reply</a>
             </div>
             <div class="flex items-center">
-                <a href="#" class="text-gray-500 hover:text-gray-700 mr-4"><i class="far fa-flag"></i> Report</a>
-                <a href="#" class="text-gray-500 hover:text-gray-700"><i class="far fa-share-square"></i> Share</a>
+                <a href="#" class="text-gray-500 hover:text-gray-700 mr-4 sr-only"><i class="far fa-flag"></i>
+                    Report</a>
+
+
+                <a href="#" class="text-gray-500 hover:text-gray-700 mr-4 sr-only"><i class="far fa-flag"></i>
+                    Delete</a>
+
+                <form v-if="canDelete" @submit.prevent="deleteComment">
+
+                    <button class="text-gray-500 hover:text-gray-700 mr-4">Delete</button>
+
+                </form>
             </div>
         </div>
     </div>
@@ -23,8 +33,20 @@
 
 <script setup>
 
-import {relativeDate} from '@/Utilities/date';
+import { relativeDate } from '@/Utilities/date';
+import { router, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 
-defineProps(['comment']);
+const props = defineProps(['comment']);
+
+
+const deleteComment = () => router.delete(route('comments.destroy', props.comment.id), {
+
+    preserveScroll: true
+
+});
+
+
+const canDelete = computed( () => props.comment.user.id === usePage().props.auth.user?.id);
 
 </script>

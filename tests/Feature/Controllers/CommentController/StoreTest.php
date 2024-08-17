@@ -6,6 +6,16 @@ use App\Models\User;
 use Tests\TestCase;
 
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\post;
+
+
+it('requires authentication', function() {
+
+    post(route('posts.comments.store', Post::factory()->create()))
+        ->assertRedirect(route('login'));
+
+});
+
 
 it('can store a comment', function() {
     /** @var TestCase $this */
