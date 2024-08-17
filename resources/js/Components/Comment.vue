@@ -21,9 +21,9 @@
                 <a href="#" class="text-gray-500 hover:text-gray-700 mr-4 sr-only"><i class="far fa-flag"></i>
                     Delete</a>
 
-                <form v-if="canDelete" @submit.prevent="deleteComment">
+                <form v-if="comment.can?.delete" @submit.prevent="$emit('delete', comment.id)">
 
-                    <button class="text-gray-500 hover:text-gray-700 mr-4">Delete</button>
+                    <button class="text-red-500 hover:text-red-700 mr-4">Delete</button>
 
                 </form>
             </div>
@@ -40,13 +40,7 @@ import { computed } from 'vue';
 const props = defineProps(['comment']);
 
 
-const deleteComment = () => router.delete(route('comments.destroy', props.comment.id), {
+const emit = defineEmits(['delete']);
 
-    preserveScroll: true
-
-});
-
-
-const canDelete = computed( () => props.comment.user.id === usePage().props.auth.user?.id);
 
 </script>

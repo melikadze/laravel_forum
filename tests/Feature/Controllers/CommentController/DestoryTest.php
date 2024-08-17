@@ -7,15 +7,14 @@ use App\Models\Comment;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\actingAs;
 
-it('requires authentication', function() {
+it('requires authentication', function () {
 
     delete(route('comments.destroy', Comment::factory()->create()))
         ->assertRedirect(route('login'));
-
 });
 
 
-it('can delete a comment', function() {
+it('can delete a comment', function () {
     /** @var TestCase $this */
 
     $comment = Comment::factory()->create();
@@ -29,7 +28,21 @@ it('can delete a comment', function() {
 });
 
 
-it('redirects to the post show page', function() {
+it('redirects to the post show page with the page query parameter', function () {
+    /** @var TestCase $this */
+
+    $comment = Comment::factory()->create();
+
+
+    actingAs($comment->user)
+
+        ->delete(route('comments.destroy', [ 'comment' => $comment, 'page' => 2 ]))
+
+        ->assertRedirect(route('posts.show', [ 'post' => $comment->post_id, 'page' => 2 ]));
+});
+
+
+it('redirects to the post show page', function () {
     /** @var TestCase $this */
 
     $comment = Comment::factory()->create();
@@ -43,7 +56,7 @@ it('redirects to the post show page', function() {
 });
 
 
-it('prevents deleting a comment you did not create', function() {
+it('prevents deleting a comment you did not create', function () {
 
     /** @var TestCase $this */
 
@@ -57,5 +70,25 @@ it('prevents deleting a comment you did not create', function() {
         ->delete(route('comments.destroy', $comment))
 
         ->assertForbidden();
+});
 
+
+
+it('prevents deleting a comment posted over an hour ago', function () {
+
+    /** @var TestCase $this */
+
+    $this->freezeTime();
+
+    $comment = Comment::factory()->create();
+
+
+    $this->travel(1)->hour();
+
+
+    actingAs($comment->user)
+
+        ->delete(route('comments.destroy', $comment))
+
+        ->assertForbidden();
 });
