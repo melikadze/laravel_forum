@@ -11,6 +11,7 @@ it('requires authentication', function () {
 
     delete(route('comments.destroy', Comment::factory()->create()))
         ->assertRedirect(route('login'));
+
 });
 
 
@@ -71,7 +72,6 @@ it('prevents deleting a comment you did not create', function () {
 
         ->assertForbidden();
 });
-
 
 
 it('prevents deleting a comment posted over an hour ago', function () {
