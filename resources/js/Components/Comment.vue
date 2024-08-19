@@ -21,6 +21,12 @@
                 <a href="#" class="text-gray-500 hover:text-gray-700 mr-4 sr-only"><i class="far fa-flag"></i>
                     Delete</a>
 
+                <form v-if="comment.can?.update" @submit.prevent="$emit('edit', comment.id)">
+
+                    <button class="text-gray-500 hover:text-gray-700 mr-4">Edit</button>
+
+                </form>
+
                 <form v-if="comment.can?.delete" @submit.prevent="$emit('delete', comment.id)">
 
                     <button class="text-red-500 hover:text-red-700 mr-4">Delete</button>
@@ -40,7 +46,7 @@ import { computed } from 'vue';
 const props = defineProps(['comment']);
 
 
-const emit = defineEmits(['delete']);
+const emit = defineEmits(['delete', 'edit']);
 
 
 </script>

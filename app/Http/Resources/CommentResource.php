@@ -31,6 +31,8 @@ class CommentResource extends JsonResource
 
                 'delete' => $request->user()?->can('delete', $this->resource),
 
+                'update' => $request->user()?->can('update', $this->resource),
+
             ]
         ];
     }
