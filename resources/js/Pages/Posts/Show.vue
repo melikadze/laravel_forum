@@ -57,6 +57,7 @@ import InputError from '@/Components/InputError.vue';
 import { router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import { useConfirm } from '@/Utilities/Composables/useConfirm';
 
 const props = defineProps(['post', 'comments']);
 const formattedDate = computed(() => relativeDate(props.post.created_at));
@@ -67,6 +68,7 @@ const commentForm = useForm({
 const commentTextAreaRef = ref(null);
 const commentIdBeingEdited = ref(null);
 const commentBeingEdit = computed(() => props.comments.data.find(comment => comment.id === commentIdBeingEdited.value));
+const {confirmation} = useConfirm();
 
 const editComment = (commentId) => {
     commentIdBeingEdited.value = commentId;
@@ -84,15 +86,30 @@ const addComment = () => commentForm.post(route('posts.comments.store', props.po
     onSuccess: () => commentForm.reset(),
 });
 
-const updateComment = () => commentForm.put(route('comments.update', {
-    comment: commentIdBeingEdited.value,
-    page: props.comments.meta.current_page,
-}), {
-    preserveScroll: true,
-    onSuccess: cancelEditComment,
-});
+const updateComment = async () => {
 
-const deleteComment = (commentId) => router.delete(route('comments.destroy', { comment: commentId, page: props.comments.meta.current_page }), {
-    preserveScroll: true
-});
+    if(! await confirmation('Are you sure you want to update this comment?')) {
+        setTimeout(() => commentTextAreaRef.value.focus(), 250);
+        return;
+    }
+
+    commentForm.put(route('comments.update', {
+        comment: commentIdBeingEdited.value,
+        page: props.comments.meta.current_page,
+    }), {
+        preserveScroll: true,
+        onSuccess: cancelEditComment,
+    });
+};
+
+const deleteComment = async (commentId) => {
+    if(! await confirmation('Are you sure you want to delete this comment?'))
+    {
+        return;
+    }
+
+    router.delete(route('comments.destroy', { comment: commentId, page: props.comments.meta.current_page }), {
+        preserveScroll: true
+    });
+};
 </script>
