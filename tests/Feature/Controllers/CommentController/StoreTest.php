@@ -1,5 +1,4 @@
 <?php
-
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
@@ -15,7 +14,6 @@ it('requires authentication', function() {
         ->assertRedirect(route('login'));
 
 });
-
 
 it('can store a comment', function() {
     /** @var TestCase $this */
@@ -45,7 +43,6 @@ it('can store a comment', function() {
 
 });
 
-
 it('redirects to the post show page', function() {
     /** @var TestCase $this */
 
@@ -63,8 +60,6 @@ it('redirects to the post show page', function() {
 
 
 });
-
-
 
 it('requires a valid body', function($value) {
     /** @var TestCase $this */

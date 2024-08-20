@@ -1,5 +1,4 @@
 <?php
-
 use Tests\TestCase;
 use App\Models\User;
 
@@ -7,14 +6,12 @@ use App\Models\Comment;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\actingAs;
 
-
 it('require authentication', function() {
 
     delete(route('comments.update', Comment::factory()->create()))
         ->assertRedirect(route('login'));
 
 });
-
 
 it('can update a comment', function() {
     /** @var TestCase $this */
@@ -40,7 +37,6 @@ it('can update a comment', function() {
 
 });
 
-
 it('redirects to the post show page', function() {
     /** @var TestCase $this */
 
@@ -55,7 +51,6 @@ it('redirects to the post show page', function() {
 
 });
 
-
 it('redirects to the correct page of comments', function() {
     /** @var TestCase $this */
 
@@ -68,7 +63,6 @@ it('redirects to the correct page of comments', function() {
         ->assertRedirect(route('posts.show', [ 'post' => $comment->post, 'page' => 2 ]));
 
 });
-
 
 it('can not update a comment from another user', function() {
     /** @var TestCase $this */
@@ -85,7 +79,6 @@ it('can not update a comment from another user', function() {
 
         ->assertForbidden();
 });
-
 
 it('require a valid body', function($value) {
     /** @var TestCase $this */

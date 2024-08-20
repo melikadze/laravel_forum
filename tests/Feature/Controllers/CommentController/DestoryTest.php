@@ -1,5 +1,4 @@
 <?php
-
 use Tests\TestCase;
 use App\Models\User;
 
@@ -14,7 +13,6 @@ it('requires authentication', function () {
 
 });
 
-
 it('can delete a comment', function () {
     /** @var TestCase $this */
 
@@ -27,7 +25,6 @@ it('can delete a comment', function () {
 
     $this->assertModelMissing($comment);
 });
-
 
 it('redirects to the post show page with the page query parameter', function () {
     /** @var TestCase $this */
@@ -42,7 +39,6 @@ it('redirects to the post show page with the page query parameter', function () 
         ->assertRedirect(route('posts.show', [ 'post' => $comment->post_id, 'page' => 2 ]));
 });
 
-
 it('redirects to the post show page', function () {
     /** @var TestCase $this */
 
@@ -55,7 +51,6 @@ it('redirects to the post show page', function () {
 
         ->assertRedirect(route('posts.show', $comment->post_id));
 });
-
 
 it('prevents deleting a comment you did not create', function () {
 
@@ -72,7 +67,6 @@ it('prevents deleting a comment you did not create', function () {
 
         ->assertForbidden();
 });
-
 
 it('prevents deleting a comment posted over an hour ago', function () {
 

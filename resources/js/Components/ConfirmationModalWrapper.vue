@@ -9,7 +9,7 @@
         </template>
 
         <template #footer>
-            <SecondaryButton ref="cancelButtonRef" @click="cancel">Cancel</SecondaryButton>
+            <SecondaryButton @click="cancel" ref="cancelButtonRef">Cancel</SecondaryButton>
             <PrimaryButton @click="confirm" class="ml-3" >Confirm</PrimaryButton>
         </template>
     </ConfirmationModal>
