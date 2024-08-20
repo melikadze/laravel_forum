@@ -49,7 +49,6 @@ class PostController extends Controller
             'user_id' => $request->user()->id
         ]);
 
-
         return to_route('posts.show', $post);
     }
 
@@ -58,15 +57,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-
         $post->load('user');
 
         return inertia('Posts/Show', [
-
             'post' => fn() => PostResource::make($post),
-
             'comments' => fn() => CommentResource::collection($post->comments()->with('user')->latest()->latest('id')->paginate(10)),
-
         ]);
     }
 
