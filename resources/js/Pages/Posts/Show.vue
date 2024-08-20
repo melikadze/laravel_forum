@@ -1,65 +1,44 @@
 <template>
-
     <AppLayout :title="post.title">
-
         <Container>
 
             <h1 class="text-2xl font-bold">{{ post.title }}</h1>
-
             <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} ago by {{ post.user.name }}</span>
 
             <article class="mt-6">
-
                 <pre class="whitespace-pre-wrap font-sans">{{ post.body }}</pre>
-
             </article>
 
 
 
             <div class="mt-12">
-
                 <h2 class="text-xl font-semibold">Comments</h2>
-
 
                 <form v-if="$page.props.auth.user"
                     @submit.prevent="() => commentIdBeingEdited ? updateComment() : addComment()" class="mt-4">
-
                     <div>
-
                         <InputLabel for="body" class="sr-only">Comment</InputLabel>
-
                         <TextArea ref="commentTextAreaRef" id="body" v-model="commentForm.body" class="w-full"
                             placeholder="Speak your mind Spock..." rows="4" />
-
                         <InputError :message="commentForm.errors.body" class="mt-1"></InputError>
-
                     </div>
 
                     <PrimaryButton type="submit" class="mt-3" :disabled="commentForm.processing"
                         v-text="commentIdBeingEdited ? 'Update Comment' : 'Add Comment'"></PrimaryButton>
-
                     <SecondaryButton @click="cancelEditComment" v-if="commentIdBeingEdited" class="ml-2">Cancel
                     </SecondaryButton>
-
                 </form>
 
-
                 <ul class="divide-y mt-4">
-
                     <li v-for="comment in comments.data" :key="comment.id" class=" px-2 py-4">
                         <Comment @edit="editComment" @delete="deleteComment" :comment="comment" />
                     </li>
-
                 </ul>
 
                 <Pagination :meta="comments.meta" :only="['comments']" />
-
             </div>
-
         </Container>
-
     </AppLayout>
-
 </template>
 
 <script setup>
