@@ -13,7 +13,7 @@ class PostController extends Controller
 
     function __construct()
     {
-
+        $this->authorizeResource(Post::class);
     }
 
     /**
