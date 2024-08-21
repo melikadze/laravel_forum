@@ -1,10 +1,11 @@
 <?php
+use Tests\TestCase;
 use App\Models\Post;
 use App\Models\User;
-use Tests\TestCase;
 
-use function Pest\Laravel\actingAs;
+use Illuminate\Support\Str;
 use function Pest\Laravel\post;
+use function Pest\Laravel\actingAs;
 
 beforeEach(function() {
     $this->data['valid'] = [
@@ -26,6 +27,7 @@ it('stores a post', function() {
 
     $this->assertDatabaseHas(Post::class, [
         ...$this->data['valid'],
+        'title' => Str::title($this->data['valid']['title']),
         'user_id' => $user->id
     ]);
 });
@@ -37,7 +39,7 @@ it('redirects to the post show page', function() {
 
     actingAs($user)
         ->post(route('posts.store'), $this->data['valid'])
-        ->assertRedirect(route('posts.show', Post::latest('id')->first()));
+        ->assertRedirect(Post::latest('id')->first()->showRoute());
 });
 
 it('requires a valid data', function(array $invalidData, array | string $errors) {

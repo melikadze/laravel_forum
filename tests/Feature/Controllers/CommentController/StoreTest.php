@@ -56,7 +56,7 @@ it('redirects to the post show page', function() {
         'body' => 'This is a comment'
 
     ])
-        ->assertRedirect(route('posts.show', $post));
+        ->assertRedirect($post->showRoute());
 
 
 });
