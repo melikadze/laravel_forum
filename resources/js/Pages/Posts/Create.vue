@@ -12,6 +12,7 @@
 
                 <div class="mt-3">
                     <InputLabel for="body" class="sr-only">Title</InputLabel>
+                    <MarkdownEditor v-model="form.body" />
                     <TextArea  id="body" class="w-full" v-model="form.body" placeholder="Give it a great title..." rows="25" />
                     <InputError :message="form.errors.body" class="mt-1"/>
                 </div>
@@ -33,6 +34,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextArea from '@/Components/TextArea.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
+import MarkdownEditor from '@/Components/MarkdownEditor.vue';
 
 const form = useForm({
     title: '',
