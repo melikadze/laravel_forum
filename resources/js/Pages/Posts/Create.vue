@@ -13,7 +13,6 @@
                 <div class="mt-3">
                     <InputLabel for="body" class="sr-only">Title</InputLabel>
                     <MarkdownEditor v-model="form.body" />
-                    <TextArea  id="body" class="w-full" v-model="form.body" placeholder="Give it a great title..." rows="25" />
                     <InputError :message="form.errors.body" class="mt-1"/>
                 </div>
 

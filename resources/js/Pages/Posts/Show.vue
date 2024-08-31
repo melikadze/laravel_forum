@@ -17,8 +17,8 @@
                     @submit.prevent="() => commentIdBeingEdited ? updateComment() : addComment()" class="mt-4">
                     <div>
                         <InputLabel for="body" class="sr-only">Comment</InputLabel>
-                        <TextArea ref="commentTextAreaRef" id="body" v-model="commentForm.body" class="w-full"
-                            placeholder="Speak your mind Spock..." rows="4" />
+                        <MarkdownEditor ref="commentTextAreaRef" id="body" v-model="commentForm.body" class="w-full"
+                            placeholder="Speak your mind Spock..." editorClass="min-h-[160px]" />
                         <InputError :message="commentForm.errors.body" class="mt-1"></InputError>
                     </div>
 
@@ -57,6 +57,7 @@ import { router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { useConfirm } from '@/Utilities/Composables/useConfirm';
+import MarkdownEditor from '@/Components/MarkdownEditor.vue';
 
 const props = defineProps(['post', 'comments']);
 const formattedDate = computed(() => relativeDate(props.post.created_at));

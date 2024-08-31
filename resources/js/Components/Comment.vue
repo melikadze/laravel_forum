@@ -7,7 +7,7 @@
                 <div class="text-gray-500">{{ relativeDate(comment.created_at) }} ago</div>
             </div>
         </div>
-        <p class="text-lg leading-relaxed mb-6 break-words">{{ comment.body }}</p>
+        <div class="mt-1 prose prose-sm max-w-none" v-html="comment.html"></div>
         <div class="flex justify-between items-center ">
             <div>
                 <a href="#" class="text-gray-500 hover:text-gray-700 mr-4"><i class="far fa-thumbs-up"></i> Like</a>
