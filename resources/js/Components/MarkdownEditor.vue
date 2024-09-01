@@ -73,6 +73,8 @@
                     ]"
                     title="Heading 3"><i class="ri-h-3"></i></button></li>
 
+            <slot name="toolbar" :editor="editor" />
+
         </menu>
         <EditorContent :editor="editor" />
     </div>
