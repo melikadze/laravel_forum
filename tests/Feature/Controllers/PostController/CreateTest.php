@@ -26,5 +26,5 @@ it('passes topics to the view', function() {
 
     actingAs($user)
         ->get(route('posts.create'))
-        ->assertHasResource('topics', TopicResource::make($topics));
+        ->assertHasResource('topics', TopicResource::collection($topics));
 });
