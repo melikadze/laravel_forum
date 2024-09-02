@@ -5,7 +5,7 @@
                 <PageHeading v-text="selectedTopic ? selectedTopic.name : 'All Posts'"></PageHeading>
                 <p v-if="selectedTopic" class="mt-1 text-gray-600 text-sm">{{ selectedTopic.description }}</p>
 
-                <menu class="flex space-x-1 mt-4 overflow-x-auto pb-4 pt-1 mt-3">
+                <menu class="flex space-x-1 overflow-x-auto pb-4 pt-1 mt-3">
                     <li><Phill :filled="!selectedTopic" :href="route('posts.index')">All Posts</Phill></li>
                     <li v-for="topic in topics" :key="topic.id">
                         <Phill :filled="topic.id === selectedTopic?.id" :href="route('posts.index', { topic: topic.slug })">

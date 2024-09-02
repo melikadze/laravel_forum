@@ -1,6 +1,7 @@
 <template>
     <AppLayout :title="post.title">
         <Container>
+            <Phill :href="route('posts.index', { topic: post.topic.slug})" class="mt-2">{{ post.topic.name }}</Phill>
             <PageHeading>{{ post.title }}</PageHeading>
 
             <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} ago by {{ post.user.name }}</span>
@@ -59,6 +60,7 @@ import SecondaryButton from '@/Components/SecondaryButton.vue';
 import { useConfirm } from '@/Utilities/Composables/useConfirm';
 import MarkdownEditor from '@/Components/MarkdownEditor.vue';
 import PageHeading from '@/Components/PageHeading.vue';
+import Phill from '@/Components/Phill.vue';
 
 const props = defineProps(['post', 'comments']);
 const formattedDate = computed(() => relativeDate(props.post.created_at));

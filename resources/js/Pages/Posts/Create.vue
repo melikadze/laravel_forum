@@ -11,13 +11,20 @@
                 </div>
 
                 <div class="mt-3">
+                    <InputLabel for="topic_id">Select a Topic</InputLabel>
+                    <select v-model="form.topic_id" id="topic_id"
+                        class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 w-full">
+                        <option :value="topic.id" v-for="topic in topics" :key="topic.id">{{ topic.name }}</option>
+                    </select>
+                    <InputError :message="form.errors.topic_id" class="mt-1" />
+                </div>
+
+                <div class="mt-3">
                     <InputLabel for="body" class="sr-only">Title</InputLabel>
                     <MarkdownEditor v-model="form.body">
-                        <template v-if="! isInProduction()" #toolbar="{ editor }">
-                            <li><button type="button"
-                                    @click="autofill"
-                                    class="px-3 py-2"
-                                    title="Autofill"><i class="ri-article-line"></i></button></li>
+                        <template v-if="!isInProduction()" #toolbar="{ editor }">
+                            <li><button type="button" @click="autofill" class="px-3 py-2" title="Autofill"><i
+                                        class="ri-article-line"></i></button></li>
                         </template>
                     </MarkdownEditor>
                     <InputError :message="form.errors.body" class="mt-1" />
@@ -45,8 +52,11 @@ import axios from 'axios';
 import { isInProduction } from '@/Utilities/environment';
 import PageHeading from '@/Components/PageHeading.vue';
 
+const props = defineProps(['topics']);
+
 const form = useForm({
     title: '',
+    topic_id: props.topics[0].id,
     body: '',
 });
 
@@ -54,7 +64,7 @@ const createPost = () => form.post(route('posts.store'));
 
 const autofill = async () => {
 
-    if(isInProduction()) {
+    if (isInProduction()) {
         return;
     }
 

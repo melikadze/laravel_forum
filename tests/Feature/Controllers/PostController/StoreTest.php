@@ -1,6 +1,7 @@
 <?php
 use Tests\TestCase;
 use App\Models\Post;
+use App\Models\Topic;
 use App\Models\User;
 
 use Illuminate\Support\Str;
@@ -8,8 +9,9 @@ use function Pest\Laravel\post;
 use function Pest\Laravel\actingAs;
 
 beforeEach(function() {
-    $this->data['valid'] = [
+    $this->data['valid'] = fn() => [
         'title' => str_repeat('a', 10),
+        'topic_id' => Topic::factory()->create()->getKey(),
         'body' => str_repeat('a', 100)
     ];
 });
@@ -22,12 +24,13 @@ it('stores a post', function() {
     /** @var TestCase $this */
     /** @var User $user */
     $user = User::factory()->create();
+    $data = value($this->data['valid']);
 
-    actingAs($user)->post(route('posts.store'), $this->data['valid']);
+    actingAs($user)->post(route('posts.store'), $data);
 
     $this->assertDatabaseHas(Post::class, [
-        ...$this->data['valid'],
-        'title' => Str::title($this->data['valid']['title']),
+        ...$data,
+        'title' => Str::title($data['title']),
         'user_id' => $user->id
     ]);
 });
@@ -38,7 +41,7 @@ it('redirects to the post show page', function() {
     $user = User::factory()->create();
 
     actingAs($user)
-        ->post(route('posts.store'), $this->data['valid'])
+        ->post(route('posts.store'), value($this->data['valid']))
         ->assertRedirect(Post::latest('id')->first()->showRoute());
 });
 
@@ -48,7 +51,7 @@ it('requires a valid data', function(array $invalidData, array | string $errors)
 
     actingAs($user)
         ->post(route('posts.store', [
-            ...$this->data['valid'],
+            ...value($this->data['valid']),
             ...$invalidData
         ]))
         ->assertInvalid($errors);
@@ -59,6 +62,8 @@ it('requires a valid data', function(array $invalidData, array | string $errors)
     [['title' => 1.5], 'title'],
     [['title' => str_repeat('a', 121)], 'title'],
     [['title' => str_repeat('a', 9)], 'title'],
+    [['topic_id' => null], 'topic_id'],
+    [['topic_id' => -1], 'topic_id'],
 
     [['body' => null,], 'body'],
     [['body' => true,], 'body'],
