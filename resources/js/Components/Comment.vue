@@ -4,7 +4,7 @@
             <img :src="comment.user.profile_photo_url" alt="Avatar" class="w-12 h-12 rounded-full mr-4">
             <div>
                 <div class="text-lg font-medium text-gray-800">{{ comment.user.name }}</div>
-                <div class="text-gray-500">{{ relativeDate(comment.created_at) }} ago</div>
+                <div class="text-gray-500">{{ relativeDate(comment.created_at) }}</div>
             </div>
         </div>
         <div class="mt-1 prose prose-sm max-w-none" v-html="comment.html"></div>

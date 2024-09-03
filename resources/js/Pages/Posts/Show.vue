@@ -1,10 +1,15 @@
 <template>
+
+    <Head>
+        <link rel="canocical" :href="post.routes.show" />
+    </Head>
+
     <AppLayout :title="post.title">
         <Container>
             <Phill :href="route('posts.index', { topic: post.topic.slug })" class="mt-2">{{ post.topic.name }}</Phill>
             <PageHeading>{{ post.title }}</PageHeading>
 
-            <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} ago by {{ post.user.name }}</span>
+            <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} by {{ post.user.name }}</span>
 
             <article class="mt-6 prose prose-sm max-w-none" v-html="post.html">
             </article>
@@ -51,7 +56,7 @@ import { relativeDate } from '@/Utilities/date';
 import Comment from '@/Components/Comment.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { useForm } from '@inertiajs/vue3';
+import { useForm, Head } from '@inertiajs/vue3';
 import TextArea from '@/Components/TextArea.vue';
 import InputError from '@/Components/InputError.vue';
 import { router } from '@inertiajs/vue3';
