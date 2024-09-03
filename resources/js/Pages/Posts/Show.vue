@@ -1,7 +1,7 @@
 <template>
     <AppLayout :title="post.title">
         <Container>
-            <Phill :href="route('posts.index', { topic: post.topic.slug})" class="mt-2">{{ post.topic.name }}</Phill>
+            <Phill :href="route('posts.index', { topic: post.topic.slug })" class="mt-2">{{ post.topic.name }}</Phill>
             <PageHeading>{{ post.title }}</PageHeading>
 
             <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} ago by {{ post.user.name }}</span>
@@ -19,7 +19,7 @@
                     <div>
                         <InputLabel for="body" class="sr-only">Comment</InputLabel>
                         <MarkdownEditor ref="commentTextAreaRef" id="body" v-model="commentForm.body" class="w-full"
-                            placeholder="Speak your mind Spock..." editorClass="min-h-[160px]" />
+                            placeholder="Speak your mind Spock..." editorClass="!min-h-[160px]" />
                         <InputError :message="commentForm.errors.body" class="mt-1"></InputError>
                     </div>
 
@@ -71,7 +71,7 @@ const commentForm = useForm({
 const commentTextAreaRef = ref(null);
 const commentIdBeingEdited = ref(null);
 const commentBeingEdit = computed(() => props.comments.data.find(comment => comment.id === commentIdBeingEdited.value));
-const {confirmation} = useConfirm();
+const { confirmation } = useConfirm();
 
 const editComment = (commentId) => {
     commentIdBeingEdited.value = commentId;
@@ -91,7 +91,7 @@ const addComment = () => commentForm.post(route('posts.comments.store', props.po
 
 const updateComment = async () => {
 
-    if(! await confirmation('Are you sure you want to update this comment?')) {
+    if (! await confirmation('Are you sure you want to update this comment?')) {
         setTimeout(() => commentTextAreaRef.value.focus(), 250);
         return;
     }
@@ -106,12 +106,14 @@ const updateComment = async () => {
 };
 
 const deleteComment = async (commentId) => {
-    if(! await confirmation('Are you sure you want to delete this comment?'))
-    {
+    if (! await confirmation('Are you sure you want to delete this comment?')) {
         return;
     }
 
-    router.delete(route('comments.destroy', { comment: commentId, page: props.comments.meta.current_page }), {
+    router.delete(route('comments.destroy', {
+        comment: commentId,
+        page: props.comments.data.length > 1 ?  props.comments.meta.current_page : Math.max(props.comments.meta.current_page -1, 1)
+    }), {
         preserveScroll: true
     });
 };
