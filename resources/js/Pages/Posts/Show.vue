@@ -11,6 +11,10 @@
 
             <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} by {{ post.user.name }}</span>
 
+            <div class="mt-4">
+                <span class="text-pink-500 font-bold hover:text-pink-700 mr-4 cursor-pointer"><i class="ri-heart-2-line"></i> {{ post.likes_count }} Likes</span>
+            </div>
+
             <article class="mt-6 prose prose-sm max-w-none" v-html="post.html">
             </article>
 
@@ -117,7 +121,7 @@ const deleteComment = async (commentId) => {
 
     router.delete(route('comments.destroy', {
         comment: commentId,
-        page: props.comments.data.length > 1 ?  props.comments.meta.current_page : Math.max(props.comments.meta.current_page -1, 1)
+        page: props.comments.data.length > 1 ? props.comments.meta.current_page : Math.max(props.comments.meta.current_page - 1, 1)
     }), {
         preserveScroll: true
     });

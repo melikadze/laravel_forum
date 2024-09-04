@@ -10,7 +10,7 @@
         <div class="mt-1 prose prose-sm max-w-none" v-html="comment.html"></div>
         <div class="flex justify-between items-center ">
             <div>
-                <a href="#" class="text-gray-500 hover:text-gray-700 mr-4"><i class="far fa-thumbs-up"></i> Like</a>
+                <a href="#" class="font-bold text-pink-500 hover:text-pink-700 mr-4"><i class="ri-heart-2-line"></i> {{ comment.likes_count }} Likes</a>
                 <a href="#" class="text-gray-500 hover:text-gray-700"><i class="far fa-comment-alt"></i> Reply</a>
             </div>
             <div class="flex items-center">
