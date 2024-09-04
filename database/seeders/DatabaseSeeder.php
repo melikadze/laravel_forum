@@ -32,10 +32,10 @@ class DatabaseSeeder extends Seeder
 
 
         $chad = User::factory()
-        ->has(Post::factory(45)->recycle($topics)->withFixture())
-        ->has(Comment::factory(120)->recycle($posts))
+        ->has(Post::factory(1)->recycle($topics)->withFixture())
+        ->has(Comment::factory(10)->recycle($posts))
         ->has(Like::factory()->forEachSequence(
-            ...$posts->random(50)->map( fn(Post $post) => [ 'likeable_id' => $post ]),
+            ...$posts->random(1)->map( fn(Post $post) => [ 'likeable_id' => $post ]),
         ))
         ->create([
             'name' => 'Melikadze',
