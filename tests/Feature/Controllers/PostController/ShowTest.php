@@ -18,7 +18,7 @@ it('passed post to the view', function () {
     $post->load('user', 'topic');
 
     get($post->showRoute())
-        ->assertHasResource('post', PostResource::make($post));
+        ->assertHasResource('post', PostResource::make($post)->withLikePermission());
 });
 
 it('passed comments to the view', function () {
@@ -26,8 +26,11 @@ it('passed comments to the view', function () {
     $comments = Comment::factory(3)->for($post)->create();
     $comments->load('user');
 
+    $expectedResource = CommentResource::collection($comments->reverse());
+    $expectedResource->collection->transform(fn(CommentResource $resource) => $resource->withLikePermission());
+
     get($post->showRoute())
-        ->assertHasPaginatedResource('comments', CommentResource::collection($comments->reverse()));
+        ->assertHasPaginatedResource('comments', $expectedResource);
 });
 
 it('will redirect if the slug is incorrect', function() {

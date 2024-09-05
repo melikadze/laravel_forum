@@ -12,7 +12,7 @@
             <span class="block mt-1 text-sm text-gray-600">{{ formattedDate }} by {{ post.user.name }}</span>
 
             <div class="mt-4">
-                <span class="text-pink-500 font-bold hover:text-pink-700 mr-4 cursor-pointer"><i class="ri-heart-2-line"></i> {{ post.likes_count }} Likes</span>
+                <Likeable  type="post" :likeable="post" />
             </div>
 
             <article class="mt-6 prose prose-sm max-w-none" v-html="post.html">
@@ -70,6 +70,8 @@ import { useConfirm } from '@/Utilities/Composables/useConfirm';
 import MarkdownEditor from '@/Components/MarkdownEditor.vue';
 import PageHeading from '@/Components/PageHeading.vue';
 import Phill from '@/Components/Phill.vue';
+import { Link } from '@inertiajs/vue3';
+import Likeable from '@/Components/Likeable.vue';
 
 const props = defineProps(['post', 'comments']);
 const formattedDate = computed(() => relativeDate(props.post.created_at));
