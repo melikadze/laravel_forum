@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Inertia\Inertia;
+use App\Models\Topic;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\PostResource;
-use App\Http\Resources\CommentResource;
 use App\Http\Resources\TopicResource;
-use App\Models\Topic;
+use App\Http\Resources\CommentResource;
+use Illuminate\Database\Eloquent\Builder;
 
 class PostController extends Controller
 {
@@ -22,10 +23,15 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Topic $topic = null)
+    public function index(Request $request,Topic $topic = null)
     {
         $posts = Post::with(['user', 'topic'])
             ->when($topic, fn ($query) => $query->whereBelongsTo($topic))
+            ->when(
+                $request->query('query'),
+                fn(Builder $query) => $query
+                    ->whereAny(['title', 'body'], 'like', '%'.$request->query('query').'%')
+            )
             ->latest()
             ->latest('id')
             ->paginate();
@@ -34,6 +40,7 @@ class PostController extends Controller
             'posts' => PostResource::collection($posts),
             'topics' => fn() => TopicResource::collection(Topic::all()),
             'selectedTopic' => fn() => $topic ? TopicResource::make($topic) : null,
+            'query' => $request->query('query'),
         ]);
     }
 
