@@ -7,23 +7,14 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
 Route::middleware([
     'auth',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    // Route::get('/dashboard', function () {
+    //     return Inertia::render('Dashboard');
+    // })->name('dashboard');
 
     Route::resource('posts', PostController::class)->only(['store', 'create']);
     Route::resource('posts.comments', CommentController::class)->shallow()->only(['store', 'update', 'destroy']);
@@ -35,3 +26,6 @@ Route::middleware([
 
 Route::get('posts/{post}/{slug}', [PostController::class, 'show'])->name('posts.show');
 Route::get('posts/{topic?}', [PostController::class, 'index'])->name('posts.index');
+
+// Permanent redirect to the posts.index route using a closure
+Route::permanentRedirect('/', '/posts');
