@@ -6,9 +6,9 @@
                 <p v-if="selectedTopic" class="mt-1 text-gray-600 text-sm">{{ selectedTopic.description }}</p>
 
                 <menu class="flex space-x-1 overflow-x-auto pb-4 pt-1 mt-3">
-                    <li><Phill :filled="!selectedTopic" :href="route('posts.index')">All Posts</Phill></li>
+                    <li><Phill :filled="!selectedTopic" :href="route('posts.index', { query: searchForm.query})">All Posts</Phill></li>
                     <li v-for="topic in topics" :key="topic.id">
-                        <Phill :filled="topic.id === selectedTopic?.id" :href="route('posts.index', { topic: topic.slug })">
+                        <Phill :filled="topic.id === selectedTopic?.id" :href="route('posts.index', { topic: topic.slug, query: searchForm.query })">
                         {{ topic.name }}
                         </Phill>
                     </li>
@@ -20,6 +20,7 @@
                         <div class="flex space-x-2 mt-1">
                             <TextInput v-model="searchForm.query" class=" w-full" id="query" />
                             <SecondaryButton type="submit">Search</SecondaryButton>
+                            <DangerButton v-if="searchForm.query" @click="clearSearch">Clear</DangerButton>
                         </div>
                     </div>
                 </form>
@@ -50,13 +51,14 @@
 import Container from '@/Components/Container.vue';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { relativeDate } from '@/Utilities/date';
 import PageHeading from '@/Components/PageHeading.vue';
 import Phill from '@/Components/Phill.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
 
 
 const props = defineProps(['posts', 'topics', 'selectedTopic', 'query']);
@@ -64,8 +66,16 @@ const props = defineProps(['posts', 'topics', 'selectedTopic', 'query']);
 const formattedDate = (post) => relativeDate(post.created_at);
 
 const searchForm = useForm({
-    query: props.query
+    query: props.query,
+    page: 1,
 });
 
-const search = () => searchForm.get(route('posts.index'));
+const page = usePage();
+
+const search = () => searchForm.get(page.url);
+
+const clearSearch = () => {
+    searchForm.query = '';
+    search();
+};
 </script>
