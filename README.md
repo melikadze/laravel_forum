@@ -12,5 +12,5 @@ Lightweight forum built with the Laravel v11.9, Inertia v1.2, and Vue v3.4.38 st
 
 This project is a product of following the series from <a href="https://laracasts.com/series/build-a-forum-with-laravel">Laracasts</a>, mentored by <a href="https://github.com/lukeraymonddowning">Luke Downing</a>.
 
-![Index Image](./public/build/assets/index.png)
-![Login Image](./public/build/assets/login.png)
+![Index Image](./public/images/index.png)
+![Login Image](./public/images/login.png)
